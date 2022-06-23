@@ -18,7 +18,7 @@
  *
  */
 
-package kr.graha.sample.command;
+package kr.graha.app.command;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,15 +67,53 @@ public class ApplyOrderNumberProcessorImpl implements Processor {
  */
 
 	public void execute(HttpServletRequest request, HttpServletResponse response, Record params, Connection con) {
-		String sql = "update " + params.getString("prop.table.name") + " set " + params.getString("prop.table.order_column") + " = ? where insert_id = ? and " + params.getString("prop.table.pk") + " = ?";
-		Object[] param = new Object[3];
-		param[1] = params.getString("prop.logined_user");
+		String sql = "update " + params.getString("prop.table.name") + " set " + params.getString("prop.table.order_column") + " = ?";
+		sql += " where " + params.getString("prop.table.pk") + " = ?";
+		int whereColumnCount = 0;
+		if(params.hasKey("prop.table.where_column.count")) {
+			whereColumnCount = params.getInt("prop.table.where_column.count");
+		}
+		for(int i = 0; i < whereColumnCount; i++) {
+			sql += " and " + params.getString("prop.table.where_column.name." + i) + " = ?";
+		}
+		Object[] param = new Object[whereColumnCount + 2];
 		try {
 			int index = 1;
 			while(true) {
 				if(params.hasKey("param." + params.getString("prop.table.pk") + "." + index) && params.hasKey("param." + params.getString("prop.table.order_column") + "." + index)) {
 					param[0] = params.getIntObject("param." + params.getString("prop.table.order_column") + "." + index);
-					param[2] = params.getIntObject("param." + params.getString("prop.table.pk") + "." + index);
+					param[1] = params.getIntObject("param." + params.getString("prop.table.pk") + "." + index);
+					for(int i = 0; i < whereColumnCount; i++) {
+						if(params.equals("prop.table.where_column.datatype." + i, "int")) {
+							param[i + 2] = params.getIntObject(params.getString("prop.table.where_column.value." + i));
+						} else if(params.equals("prop.table.where_column.datatype." + i, "float")) {
+							param[i + 2] = params.getFloatObject(params.getString("prop.table.where_column.value." + i));
+						} else if(params.equals("prop.table.where_column.datatype." + i, "double")) {
+							param[i + 2] = params.getDoubleObject(params.getString("prop.table.where_column.value." + i));
+						} else if(params.equals("prop.table.where_column.datatype." + i, "long")) {
+							param[i + 2] = params.getLongObject(params.getString("prop.table.where_column.value." + i));
+						} else if(params.equals("prop.table.where_column.datatype." + i, "boolean")) {
+							param[i + 2] = Boolean.valueOf(params.getBoolean(params.getString("prop.table.where_column.value." + i)));
+						} else if(
+							params.equals("prop.table.where_column.datatype." + i, "date") &&
+							params.hasKey("prop.table.where_column.pattern." + i)
+						) {
+							param[i + 2] = params.getDate(
+								params.getString("prop.table.where_column.value." + i),
+								params.getString("prop.table.where_column.pattern." + i)
+							);
+						} else if(
+							params.equals("prop.table.where_column.datatype." + i, "timestamp") &&
+							params.hasKey("prop.table.where_column.pattern." + i)
+						) {
+							param[i + 2] = params.getTimestamp(
+								params.getString("prop.table.where_column.value." + i),
+								params.getString("prop.table.where_column.pattern." + i)
+							);
+						} else {
+							param[i + 2] = params.getString(params.getString("prop.table.where_column.value." + i));
+						}
+					}
 					if(DB.execute(con, null, sql, param) == 0) {
 						params.put("error.error", "message.20001");
 						break;
