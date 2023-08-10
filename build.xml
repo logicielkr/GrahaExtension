@@ -6,6 +6,12 @@
 	<property name = "package.dir" value = "${base.dir}/package"/>
 	<property name = "app.name" value = "graha-extension"/>
 	<property name = "app.version" value = "0.5.0.6"/>
+	<property name = "graha.lib.dir" value = "/opt/java/lib/graha"/>
+	<property name = "apache.tomcat.lib.dir" value = "/opt/java/lib/apache-tomcat-7.0.100"/>
+	<property name = "apache.tomcat10.lib.dir" value = "/opt/java/lib/apache-tomcat-10.0.0-M1"/>
+	<property name = "bouncy.castle.lib.dir" value = "/opt/java/lib/bouncy_castle"/>
+	<property name = "version.file" value = "${graha.lib.dir}/version.property" />
+	<property file = "${version.file}" />
 	<presetdef name="javac">
 		<javac includeantruntime="false" />
 	</presetdef>
@@ -17,9 +23,9 @@
 -->
 		<pathelement path = "${build.dir}"/>
 
-		<pathelement path = "/opt/java/lib/apache-tomcat-7.0.100/servlet-api.jar" />
-		<pathelement path = "/opt/java/lib/bouncy_castle/bcprov-jdk15to18-169.jar" />
-		<pathelement path = "/opt/java/lib/graha/graha.0.5.0.6.jar" />
+		<pathelement path = "${apache.tomcat.lib.dir}/servlet-api.jar" />
+		<pathelement path = "${bouncy.castle.lib.dir}/bcprov-jdk15to18-169.jar" />
+		<pathelement path = "${graha.lib.dir}/graha.${app.graha.version}.jar" />
 	</path>
 	<path id = "tomcat10-classpath">
 <!--
@@ -29,9 +35,9 @@
 -->
 		<pathelement path = "${build.dir}"/>
 		
-		<pathelement path = "/opt/java/lib/apache-tomcat-10.0.0-M1/servlet-api.jar" />
-		<pathelement path = "/opt/java/lib/bouncy_castle/bcprov-jdk15to18-169.jar" />
-		<pathelement path = "/opt/java/lib/graha/graha.0.5.0.6-tomcat10.jar" />
+		<pathelement path = "${apache.tomcat10.lib.dir}/servlet-api.jar" />
+		<pathelement path = "${bouncy.castle.lib.dir}/bcprov-jdk15to18-169.jar" />
+		<pathelement path = "${graha.lib.dir}/graha.${app.graha.version}-tomcat10.jar" />
 	</path>
 	<target name="depends">
 		<mkdir dir="${build.dir}" />
