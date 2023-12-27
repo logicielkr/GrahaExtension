@@ -29,7 +29,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.security.NoSuchProviderException;
-import kr.graha.lib.Encryptor;
+import kr.graha.post.interfaces.Encryptor;
 import kr.graha.app.lib.AESGCMCipher;
 import kr.graha.app.lib.AESGCMCipherUsingBouncyCastle;
 
@@ -47,7 +47,7 @@ import kr.graha.app.lib.AESGCMCipherUsingBouncyCastle;
 
  * @author HeonJik, KIM
  
- * @see kr.graha.lib.Encryptor
+ * @see kr.graha.post.interfaces.Encryptor
  
  * @version 0.9
  * @since 0.9

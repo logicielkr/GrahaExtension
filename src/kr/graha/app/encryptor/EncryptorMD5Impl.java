@@ -23,7 +23,7 @@ package kr.graha.app.encryptor;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import kr.graha.lib.Encryptor;
+import kr.graha.post.interfaces.Encryptor;
 import kr.graha.app.lib.Digest;
 
 /**
@@ -32,7 +32,7 @@ import kr.graha.app.lib.Digest;
 
  * @author HeonJik, KIM
  
- * @see kr.graha.lib.Encryptor
+ * @see kr.graha.post.interfaces.Encryptor
  
  * @version 0.9
  * @since 0.9
