@@ -308,8 +308,8 @@ public class GrahaReporter {
 		String templatePath = item.getTemplatePath();
 		File templateFile = new File(templatePath);
 		if(templateFile.exists()) {
-			this.report(templateFile, zos, xmlData);
 			Map<String, String> appends = item.getAppends();
+			this.report(templateFile, zos, xmlData, appends);
 			if(appends != null) {
 				FileInputStream is = null;
 				try {
@@ -338,14 +338,14 @@ public class GrahaReporter {
 			logger.warning("templatePath(" + templatePath + ") is wrong");
 		}
 	}
-	private void report(File templateFile, ZipOutputStream zos, byte[] xmlData)
+	private void report(File templateFile, ZipOutputStream zos, byte[] xmlData, Map<String, String> appends)
 		throws IOException, TransformerConfigurationException, TransformerException
 	{
 		if(templateFile.exists()) {
 			if(templateFile.isDirectory()) {
-				this.reportAsDirectory(templateFile.toPath(), null, zos, xmlData);
+				this.reportAsDirectory(templateFile.toPath(), null, zos, xmlData, appends);
 			} else {
-				this.reportAsZipArchive(templateFile, zos, xmlData);
+				this.reportAsZipArchive(templateFile, zos, xmlData, appends);
 			}
 		} else {
 			logger.warning("templatePath(" + templateFile.getPath() + ") is wrong");
@@ -378,7 +378,7 @@ public class GrahaReporter {
 		Files.copy(path, os);
 		os.flush();
 	}
-	private boolean excludes(String fileName) {
+	private boolean excludes(String fileName, Map<String, String> appends) {
 		if(fileName == null) {
 			return true;
 		}
@@ -389,9 +389,14 @@ public class GrahaReporter {
 		} else if(fileName.endsWith("#")) {
 			return true;
 		}
+		if(appends != null) {
+			if(appends.containsKey(fileName)) {
+				return true;
+			}
+		}
 		return false;
 	}
-	private void reportAsZipArchive(File templateFile, ZipOutputStream zos, byte[] xmlData)
+	private void reportAsZipArchive(File templateFile, ZipOutputStream zos, byte[] xmlData, Map<String, String> appends)
 		throws IOException, TransformerConfigurationException, TransformerException
 	{
 		FileInputStream fis = null;
@@ -407,7 +412,7 @@ public class GrahaReporter {
 					zos.putNextEntry(new ZipEntry(fileName));
 					copyStream(result, zos);
 				} else {
-					if(this.excludes(entry.getName())) {
+					if(this.excludes(entry.getName(), appends)) {
 					} else {
 						zos.putNextEntry(new ZipEntry(entry.getName()));
 						copyStream(zis, zos);
@@ -445,7 +450,7 @@ public class GrahaReporter {
 			}
 		}
 	}
-	private void reportAsDirectory(Path templateFilePath, Path parent, ZipOutputStream zos, byte[] xmlData)
+	private void reportAsDirectory(Path templateFilePath, Path parent, ZipOutputStream zos, byte[] xmlData, Map<String, String> appends)
 		throws IOException, TransformerConfigurationException, TransformerException
 	{
 		DirectoryStream<Path> stream = null;
@@ -466,7 +471,7 @@ public class GrahaReporter {
 			}
 			for(Path path : stream) {
 				if(Files.isDirectory(path)) {
-					this.reportAsDirectory(templateFilePath, path, zos, xmlData);
+					this.reportAsDirectory(templateFilePath, path, zos, xmlData, appends);
 				} else {
 					String fileName = templateFilePath.relativize(path).toString();
 					if(path.toString().endsWith(".xslt")) {
@@ -478,7 +483,7 @@ public class GrahaReporter {
 						is.close();
 						is = null;
 					} else {
-						if(this.excludes(fileName)) {
+						if(this.excludes(fileName, appends)) {
 						} else {
 							zos.putNextEntry(new ZipEntry(fileName));
 							copyStream(path, zos);

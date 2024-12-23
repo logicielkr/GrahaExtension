@@ -48,23 +48,26 @@ decrypt 메소드는 항상 null 을 반환한다.
 
 이에 대해서는 [WebMUA](https://github.com/logicielkr/WebMUA)의 [account.xml](https://github.com/logicielkr/WebMUA/blob/main/WEB-INF/graha/account.xml)을 참조한다.
 
-## 3. kr.graha.post.interfaces.Reporter 의 표준 구현체
+## 3. GrahaReporterImpl
 
-client_lib 의 GrahaReporter.js 의 java 버전이다.
+kr.graha.post.interfaces.Reporter 의 표준 구현체이며,
+[client_lib](https://github.com/logicielkr/client_lib) 의 
+[GrahaReporter.js](https://github.com/logicielkr/client_lib/tree/master/reporter/0.5.0.2) 의 java 버전이다.
 
-한/글, Microsoft Word, OpenOffice(LibreOffice) 등으로 작성한 문서를 기반으로 만든 Template 으로부터 hwpx, oft, docx 등의 문서파일을 생성한다.
+한/글, Microsoft Word, OpenOffice(LibreOffice) 등으로 작성한 문서를 기반으로 Template 을 만든 다음,
+그 Template 으로부터 hwpx, oft, docx 등의 문서파일을 프로그램적으로 생성한다.
 
 템플릿 작성요령은 [GrahaReporter.js](https://github.com/logicielkr/client_lib/tree/master/reporter/0.5.0.2) 를 참조한다.
 
-GrahaReporter.js 와 다르게 xml 형식의 환경설정 파일을 사용하며,
+GrahaReporter.js 와 달리 xml 형식의 환경설정 파일을 사용하며,
 이 환경설정 파일은 prop.reporter.config.file.path 로 그 경로를 전달하거나,
 명령행 프로그램에서는 파라미터로 전달된다.
 
 > xml 형식의 환경설정 파일은 src/kr/graha/app/reporter/sample.xml 을 참조한다.
 
-OpenOffice(LibreOffice) 를 이용해서 pdf 로 변환이 가능한 문서의 경우
+OpenOffice나 LibreOffice 를 이용해서 pdf 로 변환이 가능한 문서라면,
 [Office Document to PDF using JODConverter](https://github.com/logicielkr/misc/tree/master/Java_Source_Code/Office_Document_to_PDF_using_JODConverter) 를 이용해서
-pdf 변환도 지원한다.
+pdf 변환까지 지원한다.
 
 ## 4. 컴파일 가이드
 

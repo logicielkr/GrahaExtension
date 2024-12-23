@@ -72,6 +72,9 @@ public class GrahaReporterImpl implements Reporter {
  */
 	public void execute(HttpServletRequest request, HttpServletResponse response, Record params, Buffer xml, Connection con) {
 		if(!params.hasKey(Record.key(Record.PREFIX_TYPE_PROP, "reporter.config.file.path"))) {
+			LOG.severe("prop.reporter.config.file.path is missing");
+			params.put(Record.key(Record.PREFIX_TYPE_ERROR, "error"), "message.100001");
+			return;
 		}
 		GrahaReporter reporter = new GrahaReporter();
 		ReporterEntries entries = null;

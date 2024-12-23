@@ -11,6 +11,9 @@
 	<property name = "apache.tomcat10.lib.dir" value = "/opt/java/lib/apache-tomcat-10.0.0-M1"/>
 	<property name = "bouncy.castle.lib.dir" value = "/opt/java/lib/bouncy_castle"/>
 	<property name = "version.file" value = "${graha.lib.dir}/version.property" />
+	<property name = "jodconverter.lib.dir" value = "/opt/java/lib/jodconverter"/>
+	<property name = "jodconverter.wrapper.dir" value = "/opt/java/lib/jodconverter/wrapper"/>
+	<property name = "zxing.lib.dir" value = "/opt/java/lib/zxing"/>
 	<property file = "${version.file}" />
 	<presetdef name="javac">
 		<javac includeantruntime="false" />
@@ -26,6 +29,13 @@
 		<pathelement path = "${apache.tomcat.lib.dir}/servlet-api.jar" />
 		<pathelement path = "${bouncy.castle.lib.dir}/bcprov-jdk15to18-169.jar" />
 		<pathelement path = "${graha.lib.dir}/graha.${app.graha.version}.jar" />
+		
+		<pathelement path = "${jodconverter.wrapper.dir}/JODConverterWrapper.0.5.0.0.jar" />
+		<pathelement path = "${jodconverter.lib.dir}/jodconverter-core-4.4.6.jar" />
+		<pathelement path = "${jodconverter.lib.dir}/jodconverter-local-4.4.6.jar" />
+		
+		<pathelement path = "${zxing.lib.dir}/core-3.3.3.jar" />
+		<pathelement path = "${zxing.lib.dir}/javase-3.3.3.jar" />
 	</path>
 	<path id = "tomcat10-classpath">
 <!--
@@ -38,6 +48,13 @@
 		<pathelement path = "${apache.tomcat10.lib.dir}/servlet-api.jar" />
 		<pathelement path = "${bouncy.castle.lib.dir}/bcprov-jdk15to18-169.jar" />
 		<pathelement path = "${graha.lib.dir}/graha.${app.graha.version}-tomcat10.jar" />
+		
+		<pathelement path = "${jodconverter.wrapper.dir}/JODConverterWrapper.0.5.0.0.jar" />
+		<pathelement path = "${jodconverter.lib.dir}/jodconverter-core-4.4.6.jar" />
+		<pathelement path = "${jodconverter.lib.dir}/jodconverter-local-4.4.6.jar" />
+		
+		<pathelement path = "${zxing.lib.dir}/core-3.3.3.jar" />
+		<pathelement path = "${zxing.lib.dir}/javase-3.3.3.jar" />
 	</path>
 	<target name="depends">
 		<mkdir dir="${build.dir}" />
