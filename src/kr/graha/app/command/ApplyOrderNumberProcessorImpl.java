@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import kr.graha.post.interfaces.Processor;
 import kr.graha.post.lib.Record;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import kr.graha.helper.LOG;
 import kr.graha.helper.DB;
 import java.sql.SQLException;
@@ -43,7 +41,6 @@ import java.sql.Connection;
  */
 public class ApplyOrderNumberProcessorImpl implements Processor {
 	
-	private Logger logger = Logger.getLogger(this.getClass().getName());
 	public ApplyOrderNumberProcessorImpl() {
 		
 	}
@@ -127,7 +124,7 @@ public class ApplyOrderNumberProcessorImpl implements Processor {
 			}
 		} catch (SQLException e) {
 			params.put(Record.key(Record.PREFIX_TYPE_ERROR, "error"), "message.20002");
-			if(logger.isLoggable(Level.SEVERE)) { logger.severe(LOG.toString(e)); }
+			LOG.severe(e);
 		}
 	}
 }
