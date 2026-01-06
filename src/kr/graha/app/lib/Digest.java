@@ -45,9 +45,25 @@ public class Digest {
 	}
 	private Digest() {
 	}
+	private String digest(String[] plain, String algorithm) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance(algorithm);
+		for(int i = 0; i < plain.length; i++) {
+			md.update(plain[i].getBytes());
+		}
+		byte[] b = md.digest();
+	    return hex(b);
+	}
 	private String digest(String plain, String algorithm) throws NoSuchAlgorithmException {
+	    return this.digest(plain.getBytes(), algorithm);
+	}
+	private String digest(byte[] bytes, String algorithm) throws NoSuchAlgorithmException {
+		return this.digest(new byte[][]{bytes}, algorithm);
+	}
+	private String digest(byte[][] bytes, String algorithm) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance(algorithm); 
-		md.update(plain.getBytes()); 
+		for(int i = 0; i < bytes.length; i++) {
+			md.update(bytes[i]);
+		}
 		byte[] b = md.digest();
 	    return hex(b);
 	}
@@ -63,7 +79,13 @@ public class Digest {
 	public String md5(String plain) throws NoSuchAlgorithmException {
 		return digest(plain, "MD5");
 	}
+	public String md5(String[] plain) throws NoSuchAlgorithmException {
+		return digest(plain, "MD5");
+	}
 	public String sha512(String plain) throws NoSuchAlgorithmException {
+		return digest(plain, "SHA-512");
+	}
+	public String sha512(String[] plain) throws NoSuchAlgorithmException {
 		return digest(plain, "SHA-512");
 	}
 }
